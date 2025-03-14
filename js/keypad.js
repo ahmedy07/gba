@@ -84,11 +84,11 @@ GameBoyAdvanceKeypad.prototype.keyboardHandler = function(e) {
 GameBoyAdvanceKeypad.prototype.mouseHandler = function(e) {
 	var toggle = 0;
 	if (e.button === 0) {
-		// Left click for 'B'
-		toggle = this.B;
-	} else if (e.button === 2) {
-		// Right click for 'A'
+		// Left click for 'A'
 		toggle = this.A;
+	} else if (e.button === 2) {
+		// Right click for 'B'
+		toggle = this.B;
 	}
 
 	toggle = 1 << toggle;
