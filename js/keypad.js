@@ -1,3 +1,4 @@
+
 function GameBoyAdvanceKeypad() {
 	this.KEYCODE_LEFT = 37;
 	this.KEYCODE_UP = 38;
@@ -5,8 +6,6 @@ function GameBoyAdvanceKeypad() {
 	this.KEYCODE_DOWN = 40;
 	this.KEYCODE_START = 13;
 	this.KEYCODE_SELECT = 220;
-	this.KEYCODE_A = 90;
-	this.KEYCODE_B = 88;
 	this.KEYCODE_L = 65;
 	this.KEYCODE_R = 83;
 
@@ -48,12 +47,6 @@ GameBoyAdvanceKeypad.prototype.keyboardHandler = function(e) {
 	case this.KEYCODE_SELECT:
 		toggle = this.SELECT;
 		break;
-	case this.KEYCODE_A:
-		toggle = this.A;
-		break;
-	case this.KEYCODE_B:
-		toggle = this.B;
-		break;
 	case this.KEYCODE_L:
 		toggle = this.L;
 		break;
@@ -78,6 +71,28 @@ GameBoyAdvanceKeypad.prototype.keyboardHandler = function(e) {
 
 	toggle = 1 << toggle;
 	if (e.type == "keydown") {
+		this.currentDown &= ~toggle;
+	} else {
+		this.currentDown |= toggle;
+	}
+
+	if (this.eatInput) {
+		e.preventDefault();
+	}
+};
+
+GameBoyAdvanceKeypad.prototype.mouseHandler = function(e) {
+	var toggle = 0;
+	if (e.button === 0) {
+		// Left click for 'B'
+		toggle = this.B;
+	} else if (e.button === 2) {
+		// Right click for 'A'
+		toggle = this.A;
+	}
+
+	toggle = 1 << toggle;
+	if (e.type == "mousedown") {
 		this.currentDown &= ~toggle;
 	} else {
 		this.currentDown |= toggle;
@@ -158,6 +173,9 @@ GameBoyAdvanceKeypad.prototype.pollGamepads = function() {
 GameBoyAdvanceKeypad.prototype.registerHandlers = function() {
 	window.addEventListener("keydown", this.keyboardHandler.bind(this), true);
 	window.addEventListener("keyup", this.keyboardHandler.bind(this), true);
+
+	window.addEventListener("mousedown", this.mouseHandler.bind(this), true);
+	window.addEventListener("mouseup", this.mouseHandler.bind(this), true);
 
 	window.addEventListener("gamepadconnected", this.gamepadConnectHandler.bind(this), true);
 	window.addEventListener("mozgamepadconnected", this.gamepadConnectHandler.bind(this), true);
