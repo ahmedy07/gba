@@ -18,6 +18,26 @@ function GameBoyAdvanceVideo() {
 	this.drawCallback = function() {};
 	this.vblankCallback = function() {};
 };
+#include <gba.h>
+
+int main(void) {
+    // Initialiser le mode vidéo 3, qui permet une résolution de 240x160
+    REG_DISPCNT = MODE_3 | BG2_ENABLE;
+
+    // Remplir l'écran avec une couleur (par exemple, bleu)
+    for (int y = 0; y < 160; y++) {
+        for (int x = 0; x < 240; x++) {
+            VRAM[y * 240 + x] = RGB(0, 0, 31); // Bleu
+        }
+    }
+
+    // Boucle principale
+    while (1) {
+        // Mettre à jour l'affichage ou gérer les entrées ici
+    }
+
+    return 0;
+}
 
 GameBoyAdvanceVideo.prototype.clear = function() {
 	this.renderPath.clear(this.cpu.mmu);
